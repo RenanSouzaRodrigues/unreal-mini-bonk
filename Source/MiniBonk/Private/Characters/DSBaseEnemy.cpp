@@ -1,28 +1,23 @@
 // Made by Dallai Studios - 2025
 
-
 #include "Characters/DSBaseEnemy.h"
+#include "Components/ArrowComponent.h"
+#include "Components/CapsuleComponent.h"
 
-
-// Sets default values
+// ===================================================================
+// UNREAL LIFECYCLE METHODS
+// ===================================================================
 ADSBaseEnemy::ADSBaseEnemy() {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
+
+	this->EnemyBody = this->CreateDefaultSubobject<UStaticMeshComponent>("Enemy Body");
+	this->EnemyBody->SetupAttachment(this->GetCapsuleComponent());
+	this->EnemyBody->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 }
 
-// Called when the game starts or when spawned
 void ADSBaseEnemy::BeginPlay() {
 	Super::BeginPlay();
-	
-}
 
-// Called every frame
-void ADSBaseEnemy::Tick(float DeltaTime) {
-	Super::Tick(DeltaTime);
+	this->GetArrowComponent()->SetHiddenInGame(false);
+	this->GetArrowComponent()->SetVisibility(true);
 }
-
-// Called to bind functionality to input
-void ADSBaseEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-}
-
